@@ -11,7 +11,7 @@ Pod::Spec.new do |spec|
                             组件化路由，消息监听，封装好的工具
                       DESC
 
-  spec.homepage     = "http://EXAMPLE/TFY_RouterMessageKit"
+  spec.homepage     = "https://github.com/13662049573/TFY_RouterMessage"
  
   spec.license      = "MIT"
   
@@ -19,7 +19,7 @@ Pod::Spec.new do |spec|
   
   spec.platform     = :ios, "10.0"
 
-  spec.source       = { :git => "https://github.com/13662049573/TFY_MessageMKit.git", :tag => spec.version }
+  spec.source       = { :git => "https://github.com/13662049573/TFY_RouterMessage.git", :tag => spec.version }
 
   spec.source_files  = "TFY_RouterMessage/TFY_RouterMessageKit/TFY_RouterMessageKit.h"
   
