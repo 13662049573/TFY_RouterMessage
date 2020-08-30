@@ -1,0 +1,6 @@
+framework module Pods_TFY_RouterMessage_TFY_RouterMessageUITests {
+  umbrella header "Pods-TFY_RouterMessage-TFY_RouterMessageUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}

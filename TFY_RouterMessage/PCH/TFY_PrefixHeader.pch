@@ -1,0 +1,23 @@
+//
+//  TFY_PrefixHeader.pch
+//  TFY_RouterMessage
+//
+//  Created by 田风有 on 2020/8/30.
+//  Copyright © 2020 田风有. All rights reserved.
+//
+
+#ifndef TFY_PrefixHeader_pch
+#define TFY_PrefixHeader_pch
+
+#import <ReactiveObjC/ReactiveObjC.h>
+#import <TFY_AutoLayout/TFY_AutoLayout.h>
+#import <TFY_LayoutCategoryHeader.h>
+#import <TFY_Navigation/TFY_Navigation.h>
+#import <TFY_ModelSqliteHeader.h>
+#import <TFY_PromptpopupHeader.h>
+#import <TFY_TabBarHeader.h>
+
+#import "TFY_RouterMessageKit.h"
+#import "TFY_RouterHeader.h"
+
+#endif /* TFY_PrefixHeader_pch */
