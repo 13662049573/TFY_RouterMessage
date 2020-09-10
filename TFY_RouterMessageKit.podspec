@@ -3,7 +3,7 @@ Pod::Spec.new do |spec|
 
   spec.name         = "TFY_RouterMessageKit"
 
-  spec.version      = "2.0.0"
+  spec.version      = "2.0.2"
 
   spec.summary      = "组件化路由，消息监听，封装好的工具"
 
