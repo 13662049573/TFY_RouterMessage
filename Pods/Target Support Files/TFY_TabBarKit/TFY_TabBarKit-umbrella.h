@@ -10,7 +10,7 @@
 #endif
 #endif
 
-#import "TFY_TabBarHeader.h"
+#import "TFY_TabBarKit.h"
 #import "TfySY_TabBar.h"
 #import "TfySY_TabBarBadge.h"
 #import "TfySY_TabBarController.h"

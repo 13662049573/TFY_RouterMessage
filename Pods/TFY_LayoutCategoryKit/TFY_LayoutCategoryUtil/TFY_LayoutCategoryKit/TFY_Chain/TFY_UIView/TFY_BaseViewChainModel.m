@@ -10,6 +10,7 @@
 #import "TFY_GestureChainHeader.h"
 #import "TFY_ChainBaseModel+TFY_Tools.h"
 #import <objc/runtime.h>
+#import "UIView+TFY_Tools.h"
 
 #define TFY_CATEGORY_CHAIN_VIEW_IMPLEMENTATION(TFY_Method,TFY_ParaType) TFY_CATEGORY_CHAIN_VIEWCLASS_IMPLEMENTATION(TFY_Method,TFY_ParaType, id,UIView)
 
@@ -26,7 +27,7 @@ return self;    \
 }
 
 @interface TFY_BaseViewChainModel ()
-@property (nonatomic, assign) NSInteger  tag;
+TFY_PROPERTY_NSInteger(tag);
 @end
 
 @implementation TFY_BaseViewChainModel
@@ -123,6 +124,33 @@ TFY_CATEGORY_CHAIN_VIEW_IMPLEMENTATION(autoresizesSubviews, BOOL)
     };
 }
 
+-(id  _Nonnull (^)(UIColor * _Nonnull))ios13BackgroundColor {
+    return ^(UIColor *color){
+        [self enumerateObjectsUsingBlock:^(UIView * _Nonnull obj) {
+            [obj tfy_setiOS13DarkModeColor:color forProperty:@"backgroundColor"];
+        }];
+        return self;
+    };
+}
+
+-(id  _Nonnull (^)(UIColor * _Nonnull))ios13BorderColor {
+    return ^(UIColor *color){
+        [self enumerateObjectsUsingBlock:^(UIView * _Nonnull obj) {
+            [obj tfy_setiOS13DarkModeColor:color forProperty:@"borderColor"];
+        }];
+        return self;
+    };
+}
+
+- (id  _Nonnull (^)(UIColor * _Nonnull))ios13ShadowColor {
+    return ^(UIColor *color){
+        [self enumerateObjectsUsingBlock:^(UIView * _Nonnull obj) {
+            [obj tfy_setiOS13DarkModeColor:color forProperty:@"shadowColor"];
+        }];
+        return self;
+    };
+}
+
 #pragma mark - show -
 
 TFY_CATEGORY_CHAIN_VIEW_IMPLEMENTATION(backgroundColor, UIColor *)
@@ -204,7 +232,7 @@ TFY_CATEGORY_CHAIN_VIEW_IMPLEMENTATION(transform, CGAffineTransform)
 - (id  _Nonnull (^)(UIGestureRecognizer * _Nonnull, NSString * _Nonnull))addGestureWithTag{
     return ^(UIGestureRecognizer *ges, NSString *tag){
         if (!tag) return self;
-        NSMutableDictionary *dic = [self TFY__category_gestureDic];
+        NSMutableDictionary *dic = [self tfy_category_gestureDic];
         if ([dic.allKeys containsObject:tag]) {
             self.removeGestureByTag(tag);
         }
@@ -217,7 +245,7 @@ TFY_CATEGORY_CHAIN_VIEW_IMPLEMENTATION(transform, CGAffineTransform)
 - (id  _Nonnull (^)(NSString * _Nonnull))removeGestureByTag{
     return ^(NSString *tag){
         if (!tag) return self;
-        NSMutableDictionary *dic = [self TFY__category_gestureDic];
+        NSMutableDictionary *dic = [self tfy_category_gestureDic];
         UIGestureRecognizer *ges = [dic objectForKey:tag];
         self.removeGesture(ges);
         [dic removeObjectForKey:tag];
@@ -229,18 +257,18 @@ TFY_CATEGORY_CHAIN_VIEW_IMPLEMENTATION(transform, CGAffineTransform)
     return ^(NSString *tag){
         UIGestureRecognizer *ges;
         if (!tag) {
-            NSMutableDictionary *dic = [self TFY__category_gestureDic];
+            NSMutableDictionary *dic = [self tfy_category_gestureDic];
             ges = [dic objectForKey:tag];
         }
         return ges;
     };
 }
 
-- (NSMutableDictionary *)TFY__category_gestureDic{
-    NSMutableDictionary *_dic = objc_getAssociatedObject(self, @selector(TFY__category_gestureDic));
+- (NSMutableDictionary *)tfy_category_gestureDic{
+    NSMutableDictionary *_dic = objc_getAssociatedObject(self, @selector(tfy_category_gestureDic));
     if (!_dic) {
         _dic = [NSMutableDictionary dictionary];
-        objc_setAssociatedObject(self, @selector(TFY__category_gestureDic), _dic, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        objc_setAssociatedObject(self, @selector(tfy_category_gestureDic), _dic, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     return _dic;
 }
