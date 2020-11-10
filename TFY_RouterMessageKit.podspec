@@ -3,7 +3,7 @@ Pod::Spec.new do |spec|
 
   spec.name         = "TFY_RouterMessageKit"
 
-  spec.version      = "2.0.2"
+  spec.version      = "2.0.4"
 
   spec.summary      = "组件化路由，消息监听，封装好的工具"
 
@@ -17,7 +17,7 @@ Pod::Spec.new do |spec|
   
   spec.author       = { "420144542@qq.com" => "420144542@qq.com" }
   
-  spec.platform     = :ios, "10.0"
+  spec.platform     = :ios, "12.0"
 
   spec.source       = { :git => "https://github.com/13662049573/TFY_RouterMessage.git", :tag => spec.version }
 
