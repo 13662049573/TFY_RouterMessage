@@ -14,7 +14,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  获取格式化后的Url参数
-
   queryElementsString 待格式化的参数
   格式化后的参数
  */
