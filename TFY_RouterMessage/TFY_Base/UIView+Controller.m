@@ -43,7 +43,7 @@
     } else {
         [self.navigationController popViewControllerAnimated:YES];
     }
-    [self tfy_routerm_performFinishCompletionBlock:parame];
+    [self tfy_routermperformFinishCompletionBlock:parame];
 }
 
 /*返回到固定界面*/
@@ -65,7 +65,7 @@
 /*返回到主界面*/
 - (void)popToRoot:(id)parame {
     [self.navigationController popToRootViewControllerAnimated:true];
-    [self tfy_routerm_performFinishCompletionBlock:parame];
+    [self tfy_routermperformFinishCompletionBlock:parame];
 }
 
 /**登录到主页*/

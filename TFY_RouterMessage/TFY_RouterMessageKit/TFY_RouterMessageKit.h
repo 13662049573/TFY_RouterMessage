@@ -3,7 +3,7 @@
 //  TFY_MessageMKit
 //
 //  Created by 田风有 on 2020/8/23.
-//  最新版本：2.0.4
+//  最新版本：2.0.6
 
 #import <Foundation/Foundation.h>
 

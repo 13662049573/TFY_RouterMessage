@@ -7,7 +7,7 @@
 
 #import "TFY_RouterM.h"
 #import "TFY_RouterMHandler.h"
-
+#import "TFY_Promptbox.h"
 #pragma mark - Define&StaticVar -- 静态变量和Define声明
 
 /**
@@ -28,6 +28,18 @@ NSArray *TFY_RouterMURLQueryFormat(NSString *queryElementsString) {
         queryElements = [NSArray arrayWithObjects:[queryElements firstObject], [temp componentsJoinedByString:@"="], nil];
     }
     return queryElements;
+}
+
+/// 获取Swift化的Host
+/// host 原host
+NSString *TFY_RouterMSwiftHost(NSString *host) {
+    return [NSString stringWithFormat:@"%@swift%p", host, [TFY_RouterM router]];
+}
+
+/// 是否是swift的Url
+/// classUrl 地址
+BOOL TFY_RouterMIsSwiftClassUrl(NSString *classUrl) {
+    return [classUrl hasSuffix:[NSString stringWithFormat:@"swift%p", [TFY_RouterM router]]];
 }
 
 /** Debug模式打印Log信息 */
@@ -114,6 +126,29 @@ static BOOL _debug = NO;
 }
 
 
+/// 判定如果是swift路由的话，处理
+/// @param originUrl 源路由地址
+- (NSString *)tfy_swiftPathAndUrl:(NSString *)originUrl {
+    NSString *urlStr = [originUrl stringByAddingPercentEncodingWithAllowedCharacters:[[NSCharacterSet characterSetWithCharactersInString:@"?!@#$^&%*+,:;='\"`<>()[]{}/\\| "] invertedSet]];
+    NSURL *URL = [NSURL URLWithString:urlStr];
+    if (originUrl.length > 6 && URL && [URL.pathExtension.lowercaseString isEqualToString:@"swift"]) {
+        NSString *urlPath = [NSString stringWithFormat:@"%@%@", URL.host ? : @"", URL.path ? : @""];
+        NSString *urlTemp = [urlPath substringToIndex:urlPath.length - 6];
+        NSMutableArray *urlPaths = [[urlTemp pathComponents] mutableCopy];
+        if (urlPaths.count > 1) {
+            NSString *pathHeader = TFY_RouterMSwiftHost(urlPaths.firstObject);
+            [urlPaths replaceObjectAtIndex:0 withObject:pathHeader];
+            urlTemp = [urlPaths componentsJoinedByString:@"/"];
+            NSString *originTotalUrl = URL.scheme.length > 0 ? [NSString stringWithFormat:@"%@://%@", URL.scheme, urlPath] : urlPath;
+            NSString *newTotalUrl = URL.scheme.length > 0 ? [NSString stringWithFormat:@"%@://%@", URL.scheme, urlTemp] : urlTemp;
+            NSRange range = [originUrl rangeOfString: originTotalUrl];
+            NSString *finalUrl = [originUrl stringByReplacingCharactersInRange:range withString:newTotalUrl];
+            return finalUrl;
+        }
+    }
+    return originUrl;
+}
+
 /**
  通过路由获取执行结果
  
@@ -140,9 +175,7 @@ static BOOL _debug = NO;
         if ([self.delegate respondsToSelector:@selector(tfy_router:willHandlerUrl:parameters:)]) {
             if (![self.delegate tfy_router:self willHandlerUrl:url parameters:parameters]) {
                 /** 调用者停止了路由 */
-                error = [NSError errorWithDomain:[NSString stringWithFormat:@"调用者停止了路由[%@]流程", url]
-                                            code:TFY_RouterMStatusUserCancelHandler
-                                         userInfo:nil];
+                [TFY_Promptbox showNotify:[NSString stringWithFormat:@"调用者停止了路由[%@]流程", url]];
             }
         }
         if (!error) {
@@ -161,9 +194,7 @@ static BOOL _debug = NO;
             if ([self.delegate respondsToSelector:@selector(tfy_router:willHandlerUrl:parameters:)]) {
                 if (![self.delegate tfy_router:self willHandlerUrl:url parameters:parameters]) {
                     /** 调用者停止了路由 */
-                    error = [NSError errorWithDomain:[NSString stringWithFormat:@"调用者停止了路由[%@]流程", url]
-                                                code:TFY_RouterMStatusUserCancelHandler
-                                            userInfo:nil];
+                    [TFY_Promptbox showNotify:[NSString stringWithFormat:@"调用者停止了路由[%@]流程", url]];
                 }
             }
             completionObject = handlerBlock(url, parameters);
@@ -176,9 +207,7 @@ static BOOL _debug = NO;
                                                          forRouter:self];
             } else {
                 /** 路由协议未注册 */
-                error = [NSError errorWithDomain:[NSString stringWithFormat:@"[%@]路由协议未注册", url]
-                                            code:TFY_RouterMStatusNotRegisterScheme
-                                        userInfo:nil];
+                [TFY_Promptbox showNotify:[NSString stringWithFormat:@"[%@]路由协议未注册", url]];
             }
         }
         
@@ -306,6 +335,22 @@ static BOOL _debug = NO;
 }
 
 /**
+ 添加便捷类映射
+ 
+ \quickName 便捷访问地址
+ clazz 映射类
+ scheme 协议
+ */
+
+- (void)tfy_registerQuickName:(NSString *)quickName
+             forRealClass:(Class)clazz
+                 atScheme:(NSString *)scheme {
+    [self tfy_registerQuickName:quickName
+                   forClass:NSStringFromClass(clazz)
+                   atScheme:scheme];
+}
+
+/**
  注册scheme的错误防范
  
   className 映射地址
@@ -339,6 +384,22 @@ static BOOL _debug = NO;
     [handler tfy_handlerRegisterQuickName:quickName forAction:actionName];
 }
 
+/**
+ 添加便捷方法映射，可以注册*方法，必须使用[host/ * ]获取[class/ * ]来注册，*方法注册不支持全局注册   同一个类中只允许有一个*方法
+ 
+  quickName 便捷访问地址
+  actionSelector 映射方法，
+    普通方法为单参数，不需要加:；例：detail
+    *方法对应的映射方法必须为双参数，第一个参数为url，第二个参数为parameters，需要两个;例：handler:parameters:
+  scheme 协议
+ */
+- (void)tfy_registerQuickName:(NSString *)quickName
+              forSelector:(SEL)actionSelector
+                 atScheme:(NSString *)scheme {
+    [self tfy_registerQuickName:quickName
+                  forAction:NSStringFromSelector(actionSelector)
+                   atScheme:scheme];
+}
 /**
  为scheme注册路由协议
  

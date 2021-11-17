@@ -18,6 +18,7 @@
 		3675F62724F7AFCB00C7E8A3 /* NSObject+TFY_MessageE.m in Sources */ = {isa = PBXBuildFile; fileRef = 3675F61F24F7AFCA00C7E8A3 /* NSObject+TFY_MessageE.m */; };
 		3675F62824F7AFCB00C7E8A3 /* TFY_RouterMHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 3675F62224F7AFCA00C7E8A3 /* TFY_RouterMHandler.m */; };
 		3675F62924F7AFCB00C7E8A3 /* TFY_RouterM.m in Sources */ = {isa = PBXBuildFile; fileRef = 3675F62424F7AFCA00C7E8A3 /* TFY_RouterM.m */; };
+		36A8733B2745455100822826 /* TFY_Promptbox.m in Sources */ = {isa = PBXBuildFile; fileRef = 36A8733A2745455100822826 /* TFY_Promptbox.m */; };
 		36DCC8E524FB245D005A6249 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 36DCC8DE24FB245D005A6249 /* SceneDelegate.m */; };
 		36DCC8E624FB245D005A6249 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 36DCC8DF24FB245D005A6249 /* AppDelegate.m */; };
 		36DCC8F524FB28CD005A6249 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 36DCC8ED24FB28CD005A6249 /* ViewController.m */; };
@@ -79,6 +80,8 @@
 		3675F62324F7AFCA00C7E8A3 /* TFY_RouterMHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFY_RouterMHandler.h; sourceTree = "<group>"; };
 		3675F62424F7AFCA00C7E8A3 /* TFY_RouterM.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFY_RouterM.m; sourceTree = "<group>"; };
 		3675F62524F7AFCA00C7E8A3 /* TFY_RouterMKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFY_RouterMKit.h; sourceTree = "<group>"; };
+		36A873392745455100822826 /* TFY_Promptbox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TFY_Promptbox.h; sourceTree = "<group>"; };
+		36A8733A2745455100822826 /* TFY_Promptbox.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TFY_Promptbox.m; sourceTree = "<group>"; };
 		36DCC8DD24FB245D005A6249 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		36DCC8DE24FB245D005A6249 /* SceneDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
 		36DCC8DF24FB245D005A6249 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -252,6 +255,8 @@
 				3675F62424F7AFCA00C7E8A3 /* TFY_RouterM.m */,
 				3675F62324F7AFCA00C7E8A3 /* TFY_RouterMHandler.h */,
 				3675F62224F7AFCA00C7E8A3 /* TFY_RouterMHandler.m */,
+				36A873392745455100822826 /* TFY_Promptbox.h */,
+				36A8733A2745455100822826 /* TFY_Promptbox.m */,
 			);
 			path = TFY_RouterMKit;
 			sourceTree = "<group>";
@@ -673,6 +678,7 @@
 				36DCC91224FB3070005A6249 /* TFY_BasicRounter.m in Sources */,
 				36DCC90B24FB2BF2005A6249 /* UIView+Controller.m in Sources */,
 				3675F62624F7AFCB00C7E8A3 /* TFY_MessageM.m in Sources */,
+				36A8733B2745455100822826 /* TFY_Promptbox.m in Sources */,
 				36DCC91B24FB30C7005A6249 /* TFY_Project_usageController.m in Sources */,
 				36DCC91524FB308B005A6249 /* TFY_Network_identificationController.m in Sources */,
 				3675F62724F7AFCB00C7E8A3 /* NSObject+TFY_MessageE.m in Sources */,

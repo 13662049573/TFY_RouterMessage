@@ -19,6 +19,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 NSArray * _Nonnull TFY_RouterMURLQueryFormat(NSString * _Nonnull queryElementsString);
 
+/// 获取Swift化的Host
+///  host 原host
+NSString *TFY_RouterMSwiftHost(NSString *host);
+/// 是否是swift的Url
+/// classUrl 地址
+BOOL TFY_RouterMIsSwiftClassUrl(NSString *classUrl);
+
 #pragma mark - Define&StaticVar -- 静态变量和Define声明
 /**
  路由代理，用于监听控制路由过程状态，对于block注册的路由只监听部分状态
@@ -121,31 +128,6 @@ NSArray * _Nonnull TFY_RouterMURLQueryFormat(NSString * _Nonnull queryElementsSt
 @end
 
 /**
- 路由错误代码
-
- - TFY_RouterMStatusNotRegisterScheme: 路由Scheme未注册
- - TFY_RouterMStatusNotFoundClass: 找不到类
- - TFY_RouterMStatusNotFoundAction: 找不到方法
- - TFY_RouterMStatusUserCancelHandler: 用户取消操作
- - TFY_RouterMStatusCanPerformStarAction: 可执行*方法
- - TFY_RouterMStatusCanPerformStarAction: 可执行*方法
- - TFY_RouterMStatusCanPerformFaultTolerance: 容错的方法
- */
-typedef NS_ENUM(NSUInteger, TFY_RouterMStatusCode) {
-    TFY_RouterMStatusInputIsNull = 262004,
-    TFY_RouterMStatusNotRegisterScheme = 262300,
-    TFY_RouterMStatusErrorController = 262502,
-    TFY_RouterMStatusNotFoundController = 262501,
-    TFY_RouterMStatusNotFoundClass = 262500,
-    TFY_RouterMStatusNotFoundAction = 262404,
-    TFY_RouterMStatusRedirectUrlCycles = 262302,
-    TFY_RouterMStatusUserCancelHandler = 262002,
-    TFY_RouterMStatusCanPerformStarAction = 262001,
-    TFY_RouterMStatusCanPerformFaultTolerance = 262002,
-
-};
-
-/**
  路由运行后的回调
 
   completionObject 回调数据
@@ -179,7 +161,7 @@ typedef id _Nonnull (^TFY_RouterMRegisterHandlerBlock)(NSString *url, NSDictiona
  
   finishObject 回调数据
  */
-- (void)tfy_routerm_performFinishCompletionBlock:(id)finishObject;
+- (void)tfy_routermperformFinishCompletionBlock:(id)finishObject;
 
 
 @end
@@ -211,10 +193,10 @@ typedef id _Nonnull (^TFY_RouterMRegisterHandlerBlock)(NSString *url, NSDictiona
 /**
  获取指定Controller名称的Controller
  */
-+ (UIViewController *)tfy_stringConvertToController:(NSString *)controllerString;
++ (UIViewController *)tfy_stringConvertToController: (NSString *)controllerString;
 
 /**
- 注册TFY_RouterM，默认不忽略注册链接的大小写
+ 注册ZbRouter，默认不忽略注册链接的大小写
  
   scheme 路由协议
   classPrefix 最终生成的类前缀
@@ -225,7 +207,7 @@ typedef id _Nonnull (^TFY_RouterMRegisterHandlerBlock)(NSString *url, NSDictiona
           actionPreFix:(NSString * _Nullable)actionPreFix;
 
 /**
- 注册TFY_RouterM
+ 注册ZbRouter
  
   scheme 路由协议
   classPrefix 最终生成的类前缀
@@ -260,6 +242,18 @@ typedef id _Nonnull (^TFY_RouterMRegisterHandlerBlock)(NSString *url, NSDictiona
                  atScheme:(NSString *)scheme;
 
 /**
+ 添加便捷类映射
+ 
+  quickName 便捷访问地址
+  clazz 映射类
+  scheme 协议
+ */
+
+- (void)tfy_registerQuickName:(NSString *)quickName
+             forRealClass:(Class)clazz
+                 atScheme:(NSString *)scheme;
+
+/**
  注册scheme的容错方法，类似已*方法的调用，同一scheme只能有一个容错方法
  
   className 映射地址
@@ -270,6 +264,19 @@ typedef id _Nonnull (^TFY_RouterMRegisterHandlerBlock)(NSString *url, NSDictiona
 - (void)tfy_registerError:(NSString *)className
             forAction:(NSString *)actionName
                scheme:(NSString *)scheme;
+
+/**
+ 添加便捷方法映射，可以注册*方法，必须使用[host/ * ]获取[class/ * ]来注册，*方法注册不支持全局注册   同一个类中只允许有一个*方法
+ 
+  quickName 便捷访问地址
+  actionSelector 映射方法，
+    普通方法为单参数，不需要加:；例：detail
+    *方法对应的映射方法必须为双参数，第一个参数为url，第二个参数为parameters，需要两个;例：handler:parameters:
+  scheme 协议
+ */
+- (void)tfy_registerQuickName:(NSString *)quickName
+              forSelector:(SEL)actionSelector
+                 atScheme:(NSString *)scheme;
 
 /**
  添加便捷方法映射，可以注册*方法，必须使用[host/ * ]获取[class/ * ]来注册，*方法注册不支持全局注册   同一个类中只允许有一个*方法
@@ -323,7 +330,7 @@ typedef id _Nonnull (^TFY_RouterMRegisterHandlerBlock)(NSString *url, NSDictiona
   url 路由协议
   parameters 参数，url中的参数会替换parameters中的参数
   finish 路由执行者的回调
-  执行结果
+ @return 执行结果
  */
 - (id)tfy_responseWithUrl:(NSString *)url
            parameters:(NSDictionary * _Nullable)parameters
@@ -334,7 +341,7 @@ typedef id _Nonnull (^TFY_RouterMRegisterHandlerBlock)(NSString *url, NSDictiona
  
   url 路由协议，响应http/https协议，需要提前注册
   parameters 参数，url中的参数会替换parameters中的参数
-  执行结果
+ @return 执行结果
  */
 - (id)tfy_responseWithUrl:(NSString *)url
            parameters:(NSDictionary * _Nullable)parameters;
@@ -345,6 +352,7 @@ typedef id _Nonnull (^TFY_RouterMRegisterHandlerBlock)(NSString *url, NSDictiona
   url 链接
  */
 - (BOOL)tfy_canOpenURL:(NSString *)url;
+
 
 @end
 

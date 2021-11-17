@@ -8,7 +8,7 @@
 #import "TFY_RouterMHandler.h"
 #import "TFY_RouterM.h"
 #import <objc/runtime.h>
-
+#import "TFY_Promptbox.h"
 #pragma mark - Define&StaticVar -- 静态变量和Define声明
 /** Debug模式打印Log信息 */
 #ifdef DEBUG
@@ -139,9 +139,7 @@ static NSMutableArray *RouterMHandlerRedirectLogs;
     id target = [[targetClass alloc] init];
     if (!target) {
         if (error) {
-            *error = [NSError errorWithDomain:[NSString stringWithFormat:@"[%@]映射后的类名[%@]不正确", routerHost, classString]
-                                         code:TFY_RouterMStatusNotFoundClass
-                                     userInfo:nil];
+            [TFY_Promptbox showNotify:[NSString stringWithFormat:@"[%@]映射后的类名[%@]不正确", routerHost, classString]];
         }
         return NO;
     }
@@ -159,9 +157,7 @@ static NSMutableArray *RouterMHandlerRedirectLogs;
         [self tfy_handlerStarMethodHost:routerHost className:className actionName:actionName selectorsContain:starSelectors error:error];
         
         if (error && starSelectors.count <= 0) {
-            *error = [NSError errorWithDomain:[NSString stringWithFormat:@"[%@]映射后的方法名[%@]不正确", routerPath, actionString]
-                                         code:TFY_RouterMStatusNotFoundAction
-                                     userInfo:nil];
+            [TFY_Promptbox showNotify:[NSString stringWithFormat:@"[%@]映射后的方法名[%@]不正确", routerPath, actionString]];
         }
         return NO;
     }
@@ -228,10 +224,8 @@ static NSMutableArray *RouterMHandlerRedirectLogs;
     NSString *classString = [self tfy_getClassString:className];
     /** 获取的类名不存在 且存在容错方法直接获取容错方法 */
     if ((NSClassFromString(classString)) == nil && RouterMErrorAction.allKeys.count == 1) {
-        *error = [NSError errorWithDomain:[NSString stringWithFormat:@"映射到%@容错方法", self.scheme]
-                                     code:TFY_RouterMStatusCanPerformFaultTolerance
-                                 userInfo:nil];
-
+        [TFY_Promptbox showNotify:[NSString stringWithFormat:@"映射到%@容错方法", self.scheme]];
+        
         className = [NSString stringWithFormat:@"%@", [RouterMErrorAction.allKeys firstObject]];
         actionName = RouterMErrorAction[className];
     }
@@ -265,9 +259,7 @@ static NSMutableArray *RouterMHandlerRedirectLogs;
         /** 大于0意味着有值存入，代表注册过*方法 */
         if (starSelectors.count > 0) {
             if (error) {
-                *error = [NSError errorWithDomain:[NSString stringWithFormat:@"【%@】Selector不正确，但可以执行*方法", actionName]
-                                             code:TFY_RouterMStatusCanPerformStarAction
-                                         userInfo:nil];
+                [TFY_Promptbox showNotify:[NSString stringWithFormat:@"【%@】Selector不正确，但可以执行*方法", actionName]];
             }
         }
     }
@@ -298,16 +290,14 @@ static NSMutableArray *RouterMHandlerRedirectLogs;
     if ([router.delegate respondsToSelector:@selector(tfy_router:willHandlerUrl:parameters:)]) {
         if (![router.delegate tfy_router:router willHandlerUrl:url parameters:parameters]) {
             /** 调用者停止了路由 */
-            error = [NSError errorWithDomain:[NSString stringWithFormat:@"调用者停止了路由[%@]流程", url]
-                                        code:TFY_RouterMStatusUserCancelHandler
-                                    userInfo:nil];
+            [TFY_Promptbox showNotify:[NSString stringWithFormat:@"调用者停止了路由[%@]流程", url]];
         }
     }
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     BOOL canRunStarMethod = YES;
     /** 可以执行*方法，走进该方法，则target必不为空 */
-    if (error.code == TFY_RouterMStatusCanPerformStarAction && starSelectors.count > 0) {
+    if (starSelectors.count > 0) {
         /** 默认先执行简称*方法 */
         NSString *starSelector = [starSelectors valueForKey:RouterMHandlerStarHostActionKey];
         if (!starSelector) {
@@ -330,19 +320,7 @@ static NSMutableArray *RouterMHandlerRedirectLogs;
                 /** 同时清空error记录 */
                 error = nil;
             } else {
-                error = [NSError errorWithDomain:[NSString stringWithFormat:@"未找到*方法[%@]", starSelector]
-                                            code:TFY_RouterMStatusNotFoundAction
-                                        userInfo:nil];
-            }
-        }
-    } else if (error.code == TFY_RouterMStatusCanPerformFaultTolerance ) {
-        if (!completionObject) {
-            canRunStarMethod = NO;
-            error = nil;
-            if ([target respondsToSelector:NSSelectorFromString(actionName)]) {
-                completionObject = [target performSelector:NSSelectorFromString(actionName)
-                                                withObject:url
-                                                withObject:parameters];
+                [TFY_Promptbox showNotify:[NSString stringWithFormat:@"未找到*方法[%@]", starSelector]];
             }
         }
     }
@@ -397,9 +375,7 @@ static NSMutableArray *RouterMHandlerRedirectLogs;
     
     if (![controllerName length]) {
         if (error != NULL) {
-            error = [NSError errorWithDomain:[NSString stringWithFormat:@"[%@]名称不能为空", controllerName]
-                                         code:TFY_RouterMStatusInputIsNull
-                                     userInfo:nil];
+            [TFY_Promptbox showNotify:[NSString stringWithFormat:@"[%@]名称不能为空", controllerName]];
         }
         return nil;
     }
@@ -409,17 +385,13 @@ static NSMutableArray *RouterMHandlerRedirectLogs;
         /** 如果不是控制器类型，类型错误 */
         if (![controller isKindOfClass: [UIViewController class]]) {
             if (error != NULL) {
-                error = [NSError errorWithDomain:[NSString stringWithFormat:@"[%@]控制器类型错误", controllerName]
-                                             code:TFY_RouterMStatusErrorController
-                                         userInfo:nil];
+                [TFY_Promptbox showNotify:[NSString stringWithFormat:@"[%@]控制器类型错误", controllerName]];
             }
             controller = nil;
         }
     } else {
         if (error != NULL) {
-            error = [NSError errorWithDomain:[NSString stringWithFormat:@"未找到控制器[%@]", controllerName]
-                                         code:TFY_RouterMStatusNotFoundController
-                                     userInfo:nil];
+            [TFY_Promptbox showNotify:[NSString stringWithFormat:@"未找到控制器[%@]", controllerName]];
         }
     }
     return controller;
@@ -509,7 +481,7 @@ static NSMutableArray *RouterMHandlerRedirectLogs;
                 /** 路由协议未注册，调用处理失败 */
                 NSString *errorDomain = [NSString stringWithFormat:@"[%@]在重定向路径[%@]中循环调用", url, RouterMHandlerRedirectLogs];
                 if ([router.delegate respondsToSelector:@selector(tfy_router:failHandlerUrl:parameters:error:)]) {
-                    [router.delegate tfy_router:router failHandlerUrl:url parameters:parameters error:[NSError errorWithDomain:errorDomain  code:TFY_RouterMStatusRedirectUrlCycles userInfo:@{@"currentUrl":completionObject,@"redirectUrls":[RouterMHandlerRedirectLogs copy],}]];
+                    [router.delegate tfy_router:router failHandlerUrl:url parameters:parameters error:[NSError errorWithDomain:errorDomain  code:213123 userInfo:@{@"currentUrl":completionObject,@"redirectUrls":[RouterMHandlerRedirectLogs copy],}]];
                 }
                 RouterMHandlerLog(@"错误: %@", errorDomain);
                 [RouterMHandlerRedirectLogs removeAllObjects];

@@ -61,7 +61,7 @@ TFY_PROPERTY_STRONG UILabel *title_label,*desc_label;
         [self dismissViewControllerAnimated:YES completion:nil];
     }
     
-    [self tfy_routerm_performFinishCompletionBlock:self.msg];
+    [self tfy_routermperformFinishCompletionBlock:self.msg];
 }
 
 - (void)dealloc{
