@@ -25,7 +25,8 @@ TFY_PROPERTY_ASSIGN NSInteger tabbar_index;
     // 创建选项卡的数据 想怎么写看自己，这块我就写笨点了
     NSMutableArray *tabBarVCs = NSMutableArray.array;
     NSMutableArray *tabBarConfs = NSMutableArray.array;
-    LTJ_ModuleModel *models = [LTJ_ModuleModel tfy_ModelobjectArrayWithFilename:@"Modules.json"];
+    NSDictionary *dict = [NSDictionary tfy_pathForResource:@"Modules" ofType:@".json"];
+    LTJ_ModuleModel *models = [LTJ_ModuleModel yy_modelWithDictionary:dict];
     [models.links enumerateObjectsUsingBlock:^(LTJ_LinksModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         TfySY_TabBarConfigModel *model = [TfySY_TabBarConfigModel new];
         if (obj.tabType!=2) {
@@ -72,16 +73,8 @@ TFY_PROPERTY_ASSIGN NSInteger tabbar_index;
         [tabBarConfs addObject:model];
     }];
     
-    // 使用自定义的TabBar来帮助触发凸起按钮点击事件
-    TfySY_TestTabBar *testTabBar = [TfySY_TestTabBar new];
-    [self setValue:testTabBar forKey:@"tabBar"];
-    
-    self.ControllerArray = tabBarVCs;
-    self.tfySY_TabBar = [[TfySY_TabBar alloc] initWithTabBarConfig:tabBarConfs];
-    self.tfySY_TabBar.delegate = self;
+    [self controllerArr:tabBarVCs TabBarConfigModelArr:tabBarConfs];
     self.tfySY_TabBar.backgroundColor = [UIColor whiteColor];
-    // 8.添加覆盖到上边
-    [self.tabBar addSubview:self.tfySY_TabBar];
 }
 // 9.实现代理，如下：
 static NSInteger lastIdx = 0;

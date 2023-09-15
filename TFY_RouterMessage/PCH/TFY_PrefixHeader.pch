@@ -13,8 +13,8 @@
 #import <TFY_AutoLayout/TFY_AutoLayout.h>
 #import <TFY_LayoutCategoryKit.h>
 #import <TFY_Navigation/TFY_Navigation.h>
-#import <TFY_ModelKit.h>
-#import <TFY_ProgressHMB.h>
+#import <YYModel.h>
+#import <TFY_AlertHUD.h>
 #import <TFY_TabBarKit.h>
 
 #import "TFY_RouterMessageKit.h"

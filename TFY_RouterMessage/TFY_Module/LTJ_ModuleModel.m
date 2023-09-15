@@ -10,11 +10,10 @@
 
 @implementation LTJ_ModuleModel
 
-+(NSDictionary <NSString *, Class> *)tfy_ModelReplaceContainerElementClassMapper{
++ (nullable NSDictionary<NSString *, id> *)modelContainerPropertyGenericClass{
      return @{@"links" : LTJ_LinksModel.class,
      };
 }
-
 
 @end
 

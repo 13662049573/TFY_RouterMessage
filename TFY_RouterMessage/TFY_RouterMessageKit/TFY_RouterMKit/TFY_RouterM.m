@@ -434,7 +434,7 @@ static BOOL _debug = NO;
 - (void)tfy_openUrl:(NSString *)url
      parameters:(NSDictionary * _Nullable)parameters
      completion:(TFY_RouterMCompletionBlock _Nullable)completion
-         finish:(TFY_RouterMFinishCompletionBlock _Nullable)finish;{
+         finish:(TFY_RouterMFinishCompletionBlock _Nullable)finish{
     [self tfy_responseWithUrl:url
                parameters:parameters
                completion:completion

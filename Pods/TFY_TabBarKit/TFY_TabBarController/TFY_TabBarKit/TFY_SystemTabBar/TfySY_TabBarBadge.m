@@ -8,8 +8,6 @@
 
 #import "TfySY_TabBarBadge.h"
 
-NSString *const bage = @"99+";
-
 @implementation TfySY_TabBarBadge
 
 #pragma mark - 构造
@@ -46,25 +44,31 @@ NSString *const bage = @"99+";
     self.textColor = [UIColor whiteColor];
     self.font = [UIFont boldSystemFontOfSize:10];
     self.textAlignment = NSTextAlignmentCenter;
+    self.adjustsFontSizeToFitWidth = YES;
     self.clipsToBounds = YES;
-    self.automaticHidden = NO;
+    self.automaticHidden = YES;
     self.badgeHeight = 15;
 }
+
 - (void)setBadgeText:(NSString *)badgeText{
     _badgeText = badgeText;
     self.text = _badgeText;
     CGFloat widths = _badgeText.length*9<20?20:_badgeText.length*9;
-    if (self.badgeWidth) {
-        widths = self.badgeWidth;
-    }
-    if (_badgeText.integerValue) { // 是数字 或者不为0
-        self.hidden = NO; // 不管咋地先取消隐藏
-        if (_badgeText.integerValue > 99) {
-            self.text = bage;
+    if ([badgeText isEqualToString:@"0"]) {
+        self.hidden = self.automaticHidden;
+    } else {
+        self.text = _badgeText;
+        if (self.badgeWidth) {
+            widths = self.badgeWidth;
         }
-    }else{ //
-        if (!_badgeText.length) { // 长度为0的空串
-            self.hidden = self.automaticHidden;
+        if (_badgeText.integerValue) { // 是数字 
+            self.hidden = NO;
+        } else{ //
+            if (!_badgeText.length) { // 长度为0的空串
+                widths = 10;
+                self.badgeHeight = 10;
+                self.hidden = self.automaticHidden;
+            }
         }
     }
     CGRect frame = self.frame;
@@ -72,6 +76,5 @@ NSString *const bage = @"99+";
     frame.size.height = self.badgeHeight;
     self.frame = frame;
 }
-
 
 @end

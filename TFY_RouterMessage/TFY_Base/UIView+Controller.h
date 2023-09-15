@@ -12,7 +12,7 @@ typedef void (^FinishCompletionBlock)(id _Nullable finishObject);
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface UIView (Controller)<TFY_RouterMFinishCompletionProtocol>
+@interface UIView (Controller)
 /*不传数据，直接push到下一个界面*/
 - (void)pushOpenUrl:(NSString*)openUrl parameWithDict:(NSDictionary *)parameters Finishblock:(FinishCompletionBlock)block;
 

@@ -75,8 +75,10 @@ typedef void(^CustomInteractionEffectBlock) (TfySY_TabBarItem * _Nonnull item);
 #pragma mark - 图片控制类
 /**选中后的图片名称*/
 @property(nonatomic, copy)NSString * _Nonnull selectImageName;
+@property(nonatomic, strong)UIImage * _Nonnull selectImage;
 /**正常的图片名称*/
 @property(nonatomic, copy)NSString * _Nonnull normalImageName;
+@property(nonatomic, strong)UIImage * _Nonnull normalImage;
 /**默认的 图片tintColor*/
 @property(nonatomic, strong)UIColor * _Nonnull normalTintColor;
 /**选中的 图片tintColor*/
@@ -103,6 +105,8 @@ typedef void(^CustomInteractionEffectBlock) (TfySY_TabBarItem * _Nonnull item);
 @property(nonatomic, assign)CGSize itemSize;
 /**角标内容*/
 @property(nonatomic, strong)NSString * _Nonnull badge;
+/**自定义角标位置*/
+@property(nonatomic , assign)CGPoint badgePoint;
 /**角标方位*/
 @property(nonatomic, assign)TfySY_TabBarItemBadgeStyle itemBadgeStyle;
 /**为零是否自动隐藏 默认不隐藏*/
@@ -127,8 +131,6 @@ typedef void(^CustomInteractionEffectBlock) (TfySY_TabBarItem * _Nonnull item);
 #pragma mark - item交互控制类
 /**点击触发后的交互效果*/
 @property(nonatomic, assign)TfySY_TabBarInteractionEffectStyle interactionEffectStyle;
-/**是否允许重复点击触发动画 默认NO*/
-@property(nonatomic, assign)BOOL isRepeatClick;
 /**当交互效果选选择自定义时，会回调以下Block*/
 @property(nonatomic, copy)CustomInteractionEffectBlock _Nonnull customInteractionEffectBlock;
 /**多个自定义时候使用区分的Tag*/
@@ -175,13 +177,15 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UILabel *titleLabel;
 /**角标Label*/
 @property(nonatomic, strong)TfySY_TabBarBadge *badgeLabel;
-
+/**自定义角标位置*/
+@property(nonatomic , assign)CGPoint badgePoint;
 /**模型构造器*/
 @property(nonatomic, strong)TfySY_TabBarConfigModel *itemModel;
 /**重新开始布局*/
 - (void)itemDidLayoutControl;
 /**开始执行设置的动画*/
 - (void)startStrringConfigAnimation;
+
 @end
 
 NS_ASSUME_NONNULL_END

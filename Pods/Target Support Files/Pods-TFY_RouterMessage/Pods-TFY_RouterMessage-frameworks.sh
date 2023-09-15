@@ -41,7 +41,7 @@ install_framework()
 
   if [ -L "${source}" ]; then
     echo "Symlinked..."
-    source="$(readlink "${source}")"
+    source="$(readlink -f "${source}")"
   fi
 
   if [ -d "${source}/${BCSYMBOLMAP_DIR}" ]; then
@@ -113,6 +113,7 @@ install_dsym() {
       rsync --delete -av "${RSYNC_PROTECT_TMP_FILES[@]}" --links --filter "- CVS/" --filter "- .svn/" --filter "- .git/" --filter "- .hg/" --filter "- Headers" --filter "- PrivateHeaders" --filter "- Modules" "${DERIVED_FILES_DIR}/${basename}.dSYM" "${DWARF_DSYM_FOLDER_PATH}"
     else
       # The dSYM was not stripped at all, in this case touch a fake folder so the input/output paths from Xcode do not reexecute this script because the file is missing.
+      mkdir -p "${DWARF_DSYM_FOLDER_PATH}"
       touch "${DWARF_DSYM_FOLDER_PATH}/${basename}.dSYM"
     fi
   fi
@@ -178,19 +179,19 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ReactiveObjC/ReactiveObjC.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TFY_AutoLayout/TFY_AutoLayout.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TFY_LayoutCategoryKit/TFY_LayoutCategoryKit.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/TFY_Model/TFY_Model.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TFY_Navigation/TFY_Navigation.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TFY_ProgressHUD/TFY_ProgressHUD.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TFY_TabBarKit/TFY_TabBarKit.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/YYModel/YYModel.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ReactiveObjC/ReactiveObjC.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TFY_AutoLayout/TFY_AutoLayout.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TFY_LayoutCategoryKit/TFY_LayoutCategoryKit.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/TFY_Model/TFY_Model.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TFY_Navigation/TFY_Navigation.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TFY_ProgressHUD/TFY_ProgressHUD.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TFY_TabBarKit/TFY_TabBarKit.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/YYModel/YYModel.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
   wait

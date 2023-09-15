@@ -47,21 +47,25 @@
 }
 ////////
 #pragma mark - 配置实例
-- (void)configuration{
+- (void)configuration{}
 
-}
 - (void)itemDidLayoutBadgeLabel{
-    switch (self.itemModel.itemBadgeStyle) {
-        case TfySY_TabBarItemBadgeStyleTopRight:{   // 右上方 默认
-            self.badgeLabel.center = CGPointMake(self.frame.size.width - (self.badgeLabel.frame.size.width/2),self.badgeLabel.frame.size.height/2 );
-        }break;
-        case TfySY_TabBarItemBadgeStyleTopCenter:{      // 上中间
-            self.badgeLabel.center = CGPointMake(self.frame.size.width/2,self.badgeLabel.frame.size.height/2 );
-        }break;
-        case TfySY_TabBarItemBadgeStyleTopLeft:{         // 左上方
-            self.badgeLabel.center = CGPointMake((self.badgeLabel.frame.size.width/2),self.badgeLabel.frame.size.height/2 );
-        }break;
-        default: break;
+    if (self.badgePoint.x > 0 || self.badgePoint.y > 0) {
+        self.badgeLabel.center = self.badgePoint;
+    } else {
+        switch (self.itemModel.itemBadgeStyle) {
+            case TfySY_TabBarItemBadgeStyleTopRight:{ // 右上方 默认
+                self.badgeLabel.center = CGPointMake(self.icomImgView.frame.size.width - (self.badgeLabel.frame.size.width/2),self.badgeLabel.frame.size.height/2);
+            }break;
+            case TfySY_TabBarItemBadgeStyleTopCenter:{ // 上中间
+                self.badgeLabel.center = CGPointMake(self.frame.size.width/2,self.badgeLabel.frame.size.height/2);
+            }break;
+            case TfySY_TabBarItemBadgeStyleTopLeft:{ // 左上方
+                self.badgeLabel.center = CGPointMake(self.icomImgView.frame.size.width/2-(self.badgeLabel.frame.size.width/2),self.badgeLabel.frame.size.height/2);
+            }break;
+            default:
+                break;
+        }
     }
 }
 
@@ -197,8 +201,13 @@
     _itemModel = itemModel;
     self.backgroundImageView = itemModel.backgroundImageView; // 先添加背景
     self.title = _itemModel.itemTitle;
-    self.normalImage = [UIImage imageNamed:_itemModel.normalImageName];
-    self.selectImage = [UIImage imageNamed:_itemModel.selectImageName];
+    if (itemModel.normalImage != nil && itemModel.selectImage != nil) {
+        self.normalImage = itemModel.normalImage;
+        self.selectImage = itemModel.selectImage;
+    } else {
+        self.normalImage = [UIImage imageNamed:_itemModel.normalImageName];
+        self.selectImage = [UIImage imageNamed:_itemModel.selectImageName];
+    }
     self.normalColor = _itemModel.normalColor;
     self.selectColor = _itemModel.selectColor;
     self.normalTintColor = _itemModel.normalTintColor;
@@ -207,6 +216,7 @@
     self.selectBackgroundColor = _itemModel.selectBackgroundColor;
     self.titleLabel = _itemModel.titleLabel;
     self.icomImgView = _itemModel.icomImgView;
+    self.badgePoint = _itemModel.badgePoint;
     CGRect itemFrame = self.frame;
     itemFrame.size = _itemModel.itemSize;
     self.badgeLabel.automaticHidden = _itemModel.automaticHidden;
@@ -294,7 +304,6 @@
         self.bulgeHeight = 20.0;
         self.pictureWordsMargin = 5.0;
         self.componentMargin = UIEdgeInsetsMake(5, 5, 5, 5);
-        self.isRepeatClick = NO;
     }
     return self;
 }

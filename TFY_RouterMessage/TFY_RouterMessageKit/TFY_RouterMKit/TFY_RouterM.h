@@ -151,23 +151,6 @@ typedef void (^TFY_RouterMFinishCompletionBlock)(id _Nullable finishObject);
 typedef id _Nonnull (^TFY_RouterMRegisterHandlerBlock)(NSString *url, NSDictionary * _Nullable parameters);
 
 /**
- 回调协议
- */
-@protocol TFY_RouterMFinishCompletionProtocol <NSObject>
-
-@optional
-/**
- 执行回调方法
- 
-  finishObject 回调数据
- */
-- (void)tfy_routermperformFinishCompletionBlock:(id)finishObject;
-
-
-@end
-
-
-/**
  路由控制中心
  
  @log 现在TFY_RouterM实现方法支持redirect协议转发。

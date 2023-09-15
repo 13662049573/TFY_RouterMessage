@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController<TFY_RouterMFinishCompletionProtocol>
+@interface ViewController : UIViewController
 
 - (instancetype)initWithMsg:(NSString *)msg;
 

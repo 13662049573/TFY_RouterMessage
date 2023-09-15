@@ -24,7 +24,7 @@
     [TFY_ScenePackage addBeforeWindowEvent:^(TFY_Scene * _Nonnull application) {
         [[TFY_RouterM router] tfy_openUrl:@"tabbar://tabbar/showtabbarIndexPages" parameters:@{} completion:^(id  _Nullable completionObject) {
             if ([completionObject isKindOfClass:UIViewController.class]) {
-                [UIApplication tfy_window].rootViewController = completionObject;
+                application.window.rootViewController = completionObject;
             }
         }];
     }];

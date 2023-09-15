@@ -1,8 +1,0 @@
-${PODS_ROOT}/Target Support Files/Pods-TFY_RouterMessage-TFY_RouterMessageUITests/Pods-TFY_RouterMessage-TFY_RouterMessageUITests-frameworks.sh
-${BUILT_PRODUCTS_DIR}/ReactiveObjC/ReactiveObjC.framework
-${BUILT_PRODUCTS_DIR}/TFY_AutoLayout/TFY_AutoLayout.framework
-${BUILT_PRODUCTS_DIR}/TFY_LayoutCategoryKit/TFY_LayoutCategoryKit.framework
-${BUILT_PRODUCTS_DIR}/TFY_Model/TFY_Model.framework
-${BUILT_PRODUCTS_DIR}/TFY_Navigation/TFY_Navigation.framework
-${BUILT_PRODUCTS_DIR}/TFY_ProgressHUD/TFY_ProgressHUD.framework
-${BUILT_PRODUCTS_DIR}/TFY_TabBarKit/TFY_TabBarKit.framework
